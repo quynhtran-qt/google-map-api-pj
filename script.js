@@ -9,7 +9,7 @@ function initMap() {
     //Map properties
     var map = new google.maps.Map(
         document.getElementById('map'), {
-            zoom: 17.5,
+            zoom: 17.2,
             center: csun,
             scrollwheel: false,
             zoomControl: false,
@@ -82,26 +82,32 @@ function initMap() {
 
     var polygons = [polyLib, polyAdmin, polyDuckPond, polyMatSq, polySierraSq]
 
-
     //-----------------------------------Quiz Part-----------------------------
 
     // Array of questions
     var questions = [
-        "Where is the Oviatt Library",
-        "Where is the Admissions and Records",
-        "Where is the CSUN Duck Pond",
-        "Where is the Matador Square",
-        "Where is the Sierra Quad"
+        "Where is the Oviatt Library?",
+        "Where is the Admissions and Records?",
+        "Where is the CSUN Duck Pond?",
+        "Where is the Matador Square?",
+        "Where is the Sierra Quad?"
     ]
 
     // click button to start the quiz, then hide the button
-    var quiz = document.getElementById("start-btn")
-    quiz.addEventListener("click", () => {
-        var q1 = document.createElement("P")
-        q1.innerHTML = questions[0]
-        document.querySelector(".question-container").appendChild(q1)
-        quiz.style.display = "none"
-    })
+    // var quiz = document.getElementById("start-btn")
+    // quiz.addEventListener("click", () => {
+    //     var q1 = document.createElement("P")
+    //     q1.innerHTML = questions[0]
+    //     q1.classList.add("question")
+    //     document.querySelector(".question-container").appendChild(q1)
+    //     quiz.style.display = "none"
+    // })
+
+    var q1 = document.createElement("P")
+    q1.innerHTML = questions[0]
+    q1.classList.add("question")
+    document.querySelector(".question-container").appendChild(q1)
+
 
     var numClick = 0
     var numWrong = 0
@@ -112,6 +118,7 @@ function initMap() {
 
         checkLocation(e, polygons[numClick])
         numClick++
+
         if (numClick < 5) {
             createQuestion(questions[numClick])
         }
@@ -122,9 +129,18 @@ function initMap() {
             result.classList.add("result")
             result.innerHTML = "You answered " + numRight + " right and " + numWrong + " wrong."
             document.querySelector(".question-container").appendChild(result)
-            numClick = 0
-            numWrong = 0
-            numRight = 0
+
+            var endQuiz = document.createElement("P")
+            endQuiz.classList.add("end")
+            document.querySelector("#map").appendChild(endQuiz)
+
+            var resetBtn = document.createElement("BUTTON")
+            resetBtn.innerHTML = "Reset"
+            document.querySelector(".question-container").appendChild(resetBtn)
+
+            resetBtn.addEventListener("click", () => {
+                window.location.reload(false)
+            })
         }
     })
 
@@ -134,9 +150,11 @@ function initMap() {
         if (google.maps.geometry.poly.containsLocation(e.latLng, polyArray)) {
             resultColor = 'green'
             numRight++
+            answer("correct")
         } else {
             resultColor = 'red'
             numWrong++
+            answer("incorrect")
         }
 
         polyArray.setOptions({
@@ -150,7 +168,20 @@ function initMap() {
     function createQuestion(questions) {
         var qu = document.createElement("P")
         qu.innerHTML = questions
+        qu.classList.add("question")
         document.querySelector(".question-container").appendChild(qu)
+    }
+
+    //Result of each answer
+    function answer(res) {
+        var ans = document.createElement("P")
+        ans.innerHTML = "Your answer is " + res
+        if (res == "correct") {
+            ans.classList.add("correct")
+        } else {
+            ans.classList.add("incorrect")
+        }
+        document.querySelector(".question-container").appendChild(ans)
     }
 
 }
