@@ -93,16 +93,6 @@ function initMap() {
         "Where is the Sierra Quad?"
     ]
 
-    // click button to start the quiz, then hide the button
-    // var quiz = document.getElementById("start-btn")
-    // quiz.addEventListener("click", () => {
-    //     var q1 = document.createElement("P")
-    //     q1.innerHTML = questions[0]
-    //     q1.classList.add("question")
-    //     document.querySelector(".question-container").appendChild(q1)
-    //     quiz.style.display = "none"
-    // })
-
     var q1 = document.createElement("P")
     q1.innerHTML = questions[0]
     q1.classList.add("question")
